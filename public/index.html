@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Likes</title>
+    <style>
+        body { font-family: sans-serif; background: #111; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: #222; padding: 30px; border-radius: 12px; text-align: center; width: 85%; max-width: 350px; }
+        input { padding: 12px; width: 90%; margin: 15px 0; border-radius: 6px; border: none; font-size: 16px; text-align: center; background: #333; color: #fff; }
+        button { padding: 12px 25px; background: #ff4500; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; width: 100%; cursor: pointer; }
+        #msg { margin-top: 15px; color: #00ffcc; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Auto-Likes FF</h2>
+        <p>Tu ID se procesará cada 24 horas</p>
+        <input type="text" id="uid" placeholder="Pega tu UID aquí">
+        <br>
+        <button onclick="enviar()">Activar Robot 24h</button>
+        <div id="msg"></div>
+    </div>
+    <script>
+        async function enviar() {
+            const id = document.getElementById('uid').value;
+            const msg = document.getElementById('msg');
+            if(!id) return msg.innerText = "Escribe tu ID";
+            msg.innerText = "Procesando...";
+            try {
+                const res = await fetch('/guardar-id', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                const data = await res.json();
+                msg.innerText = data.mensaje;
+            } catch (e) {
+                msg.innerText = "Error de conexión";
+            }
+        }
+    </script>
+</body>
+          </html>
